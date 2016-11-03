@@ -95,6 +95,18 @@ impl<W: Write> EncoderWriter<W> {
         try!(self.inner.finish());
         Ok(self.inner.into_inner())
     }
+
+    /// Returns the number of bytes that the compressor has consumed.
+    pub fn total_in(&self) -> u64 {
+        self.inner.data.total_in()
+    }
+
+    /// Returns the number of bytes that the compressor has produced.
+    /// Note that this will likely be smaller than what the compressor
+    /// actually wrote to the underlying stream due to buffering.
+    pub fn total_out(&self) -> u64 {
+        self.inner.data.total_out()
+    }
 }
 
 impl<W: Write> Write for EncoderWriter<W> {
