@@ -164,10 +164,12 @@ impl<W: Write, D: Ops> Write for Writer<W, D> {
         // give us a chunk of memory the same size as our own internal buffer,
         // at which point we assume it's reached the end.
         loop {
+            println!("Buflen: {}", self.buf.len());
             try!(self.dump());
 
             let before = self.data.total_out();
             self.data.run_vec(&[], &mut self.buf, Flush::Sync).unwrap();
+            println!("Before: {} After: {}", before, self.data.total_out());
             if before == self.data.total_out() {
                 break
             }
